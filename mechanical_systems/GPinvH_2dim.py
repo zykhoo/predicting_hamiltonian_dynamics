@@ -1,4 +1,4 @@
-# from Offen et al's 
+# from Offen et al's sympelctic shadow integration https://github.com/Christian-Offen/symplectic-shadow-integration
 
 from scipy.linalg import cho_factor, cho_solve
 from tqdm import tqdm
