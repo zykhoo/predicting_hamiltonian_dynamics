@@ -2,6 +2,7 @@
 
 from scipy.linalg import cho_factor, cho_solve
 from tqdm import tqdm
+import numpy as np
 
 class ShadowSEuler():
 	
