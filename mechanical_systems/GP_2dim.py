@@ -1,3 +1,5 @@
+# GP takes in q and p and learns the derivative dq/dt, dp/dt
+
 import numpy as np 
 
 def LeapfrogGP(z,h,gaussian_process,scaler):
