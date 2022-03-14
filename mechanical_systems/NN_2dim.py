@@ -13,6 +13,27 @@ from sklearn.model_selection import train_test_split
 
 import torch.optim as optim
 
+from tqdm import tqdm
+
+def gen_one_trajNN(traj_len,start,model,h,n_h = 800):
+  h_gen = h/n_h
+  x, final = start.copy(),start.copy()
+  for i in range(traj_len):
+    start=np.hstack((start,x))
+    for j in range(0,int(n_h+1)):
+      x=LeapfrogNN(x,h_gen,model)
+    final=np.hstack((final,x))
+  return start[:,1:],final[:,1:]
+
+def LeapfrogNN(z,h,net):
+## classical Leapfrog scheme for force field f
+# can compute multiple initial values simultanously, z[k]=list of k-component of all initial values
+	dim = int(len(z)/2)
+	z[dim:] = z[dim:]+h/2*torch.squeeze(net(torch.transpose(torch.tensor(z).float(),1,0)),0).detach().numpy().transpose()[dim:]
+	z[:dim] = z[:dim]+h*z[dim:]
+	z[dim:] = z[dim:]+h/2*torch.squeeze(net(torch.transpose(torch.tensor(z).float(),1,0)),0).detach().numpy().transpose()[dim:]
+	return z
+
 # define model
 def softplus(x):
     return torch.log(torch.exp(x)+1)
