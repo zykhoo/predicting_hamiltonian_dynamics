@@ -55,7 +55,7 @@ def data_preprocessing(start, delta, device):
 
 
 
-def train(net, wholemat, evalmat, optimizer=optim.Adam(net.parameters(), lr=0.01), batchsize=10, iter=1600, ):
+def train(net, wholemat, evalmat, optimizer, batchsize=10, iter=1600, ):
     for epoch in range(iter):  # loop over the dataset multiple times
 
         # for count in range(0,len(wholemat),batchsize):
