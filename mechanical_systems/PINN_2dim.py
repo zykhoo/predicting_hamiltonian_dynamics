@@ -32,7 +32,7 @@ class Net(nn.Module):
         return x
 
 # calculate loss, c1,c2,c3,c4 = 1,10,1,1 default
-def lossfuc(model,mat,x,y,x0,H0,dim,c1=1,c2=10,c3=1,c4=1,verbose=False):
+def lossfuc(model,mat,x,y,device,x0,H0,dim,c1=1,c2=10,c3=1,c4=1,verbose=False):
     if dim ==2:
       f3=(model(torch.tensor([[0.,0.]]).to(device))-torch.tensor([[0.]]).to(device))**2
       dH=torch.autograd.grad(y, x, grad_outputs=y.data.new(y.shape).fill_(1),create_graph=True)[0]
@@ -85,7 +85,7 @@ def data_preprocessing(start_train, final_train,device):
 ## train
 
 # evaluate loss of dataset use c1,c2,c3,c4=1,10,1,1
-def get_loss(model,initial_conditions,bs,x0,H0,dim,trainset=False,verbose=False):
+def get_loss(model,device,initial_conditions,bs,x0,H0,dim,trainset=False,verbose=False):
     # this function is used to calculate average loss of a whole dataset
     # rootpath: path of set to be calculated loss
     # model: model
@@ -106,7 +106,7 @@ def get_loss(model,initial_conditions,bs,x0,H0,dim,trainset=False,verbose=False)
       x=Variable((curmat[:,:dim]).float(),requires_grad=True)
       y=model(x)
       x=x.to(device)
-      loss,f1,f2,f3,f4=lossfuc(model,curmat,x,y,x0,H0,dim)
+      loss,f1,f2,f3,f4=lossfuc(model,curmat,x,y,device,x0,H0,dim)
       avg_loss+=loss.detach().cpu().item()
       avg_f1+=f1.detach().cpu().item()
       avg_f2+=f2.detach().cpu().item()
@@ -216,7 +216,7 @@ def train(net,bs,num_epoch,initial_conditions,device,wholemat,evalmat,x0,H0,dim,
             x=Variable(torch.tensor(mat[:,:dim]).float(),requires_grad=True)
             y=net(x)
 
-            loss,f1,f2,f3,f4=lossfuc(net,mat,x,y,x0,H0,dim,c2,c3,c4)  
+            loss,f1,f2,f3,f4=lossfuc(net,mat,x,y,device,x0,H0,dim,c2,c3,c4)  
             loss.backward()
             torch.nn.utils.clip_grad_norm(net.parameters(), 1)
 
@@ -250,7 +250,7 @@ def train(net,bs,num_epoch,initial_conditions,device,wholemat,evalmat,x0,H0,dim,
         
         # evaluate
         net.eval()
-        avg_val_loss=get_loss(net,len(evalmat),bs,x0,H0,dim)
+        avg_val_loss=get_loss(net,device,len(evalmat),bs,x0,H0,dim)
         avg_vallosses.append(avg_val_loss)
         
         if epoch % 10 == 0 : 
@@ -269,7 +269,7 @@ def train(net,bs,num_epoch,initial_conditions,device,wholemat,evalmat,x0,H0,dim,
     net=torch.load('checkpoint.pt')
     return net,avg_vallosses,avg_lossli,avg_f1li,avg_f2li,avg_f3li,avg_f4li
 
-def get_grad(model, z):
+def get_grad(model, z,device):
     inputs=Variable(torch.tensor([z[0][0],z[1][0]]), requires_grad = True).to(device)
     out=model(inputs.float())
     dH=torch.autograd.grad(out, inputs, grad_outputs=out.data.new(out.shape).fill_(1),create_graph=True)[0]
