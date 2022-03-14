@@ -73,7 +73,7 @@ def data_preprocessing(start_train, final_train):
     #     wholemat.append(np.vstack((
     #         np.hstack((start_train[:,i], (final_train[:,i]-start_train[:,i])/h)),
     #         np.hstack((final_train[:,i], (final_train[:,i]-start_train[:,i])/h)))))
-    wholemat = np.hstack((start.transpose(), delta.transpose()))
+    wholemat = np.hstack((start_train.transpose(), final_train.transpose()))
 
     wholemat =torch.tensor(wholemat)
     wholemat=wholemat.to(device)
