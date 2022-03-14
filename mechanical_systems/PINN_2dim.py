@@ -175,7 +175,7 @@ class EarlyStopping:
         torch.save(model, 'checkpoint.pt')                 # 这里会存储迄今最优的模型
         self.val_loss_min = val_loss
 
-def train(net,bs,num_epoch,initial_conditions,x0,H0,dim,LR,patience,c1,c2,c3,c4):
+def train(net,bs,num_epoch,initial_conditions,device,x0,H0,dim,LR,patience,c1,c2,c3,c4):
     # function of training process
     # net: the model
     # bs: batch size 
