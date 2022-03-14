@@ -1,3 +1,6 @@
+# weighted average uses the weighted average of all sample derivatives to predict the next derivative
+# weights are generated using inverse distance metric
+
 import numpy as np
 
 def get_derivative_weighted_average(newq, newp, start, delta, final):
