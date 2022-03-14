@@ -1,3 +1,5 @@
+# from Offen et al's 
+
 from scipy.linalg import cho_factor, cho_solve
 from tqdm import tqdm
 
