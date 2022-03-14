@@ -1,3 +1,5 @@
+# this neural network takes in q and p and learns the derivative dq/dt, dp/dt
+
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
