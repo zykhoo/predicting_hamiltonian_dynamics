@@ -1,3 +1,5 @@
+# NN takes in p, q, dq, dp, and learns the Hamiltonian. The derivative of the Hamiltonian is used for integration
+
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
