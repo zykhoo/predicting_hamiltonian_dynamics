@@ -1,4 +1,7 @@
+# using a linear regression to learn the derivative of all points in a sample space
+
 # from sklearn.linear_model import LinearRegression
+
 import numpy as np
 
 # fit a linear regression model using sklearn, then pass it into this function
