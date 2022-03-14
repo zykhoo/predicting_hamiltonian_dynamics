@@ -39,7 +39,7 @@ class Net(nn.Module):
         return x
 
 # calculate loss, c1,c2,c3,c4 = 1,10,1,1 default
-def lossfuc(mat,x,y,model,device,mat,c1=1,c2=1,c3=1,x0=0.,H0=0.,verbose=False):
+def lossfuc(mat,x,y,model,device,c1=1,c2=1,c3=1,x0=0.,H0=0.,verbose=False):
     # function to calculate loss
     # mat: [batch,trajectory_len,7] matrix for one trajectory [q,p,qprime,pprime]
     # x: first 2 columns in mat which is q and p, input of net
@@ -101,7 +101,7 @@ def get_loss(model,mat,bs,device,trainset=False,verbose=False):
       # x=Variable((curmat[:,:,[2,1]]).float(),requires_grad=True)
       y=model(x)
       x=x.to(device)
-      loss,f1,f2,f3=lossfuc(curmat,x,y,model,device,mat)
+      loss,f1,f2,f3=lossfuc(curmat,x,y,model,device)
       avg_loss+=loss.detach().cpu().item()
       avg_f1+=f1.detach().cpu().item()
       avg_f2+=f2.detach().cpu().item()
@@ -210,7 +210,7 @@ def train(net,wholemat,evalmat,device,lr,bs,num_epoch,patience,c1,c2,c3,verbose=
             # x=Variable(torch.tensor(mat[:,:,[2,1]]).float(),requires_grad=True)
             y=net(x)
 
-            loss,f1,f2,f3=lossfuc(mat,x,y,net,device,mat,c1,c2,c3)
+            loss,f1,f2,f3=lossfuc(mat,x,y,net,device,c1,c2,c3)
             if torch.isnan(loss):
               return net,avg_vallosses,avg_lossli,avg_f1li,avg_f2li,avg_f3li,count
             loss.backward()
