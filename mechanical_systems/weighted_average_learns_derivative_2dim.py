@@ -1,4 +1,4 @@
-import numpy as numpy
+import numpy as np
 
 def get_derivative_weighted_average(newq, newp, start, delta, final):
   q,p,qbar,pbar,qprime,pprime = start[0,:], start[1,:], final[0,:], final[1,:], delta[0,:], delta[1,:]
