@@ -67,7 +67,7 @@ def lossfuc(model,mat,x,y,x0,H0,dim,c1=1,c2=10,c3=1,c4=1,verbose=False):
       return loss,meanf1,meanf2,meanf3,meanf4
 
 
-def data_preprocessing(start_train, final_train):       
+def data_preprocessing(start_train, final_train,device):       
     # wholemat=[]
     # for i in range(len(start_train[0,:])):
     #     wholemat.append(np.vstack((
