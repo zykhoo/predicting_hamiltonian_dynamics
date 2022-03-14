@@ -1,3 +1,7 @@
+# using SINDy to find the derivative of the system
+# this code is adapted from pysindy by dynamicslab (https://github.com/dynamicslab/pysindy)
+# instead of using trajectories of x, we use x and xdot to find an equation that describes the dynamics of the system
+
 """
 Base class for SINDy optimizers.
 """
