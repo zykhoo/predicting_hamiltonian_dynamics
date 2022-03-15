@@ -88,6 +88,31 @@ def data_preprocessing(start, delta, device):
 
 
 
+
+class EarlyStopping:
+    """Early stops the training if validation loss doesn't improve after a given patience."""
+    def __init__(self, patience=7, verbose=False, delta=0):
+        """
+        Args:
+            patience (int): How long to wait after last time validation loss improved.
+                            上次验证集损失值改善后等待几个epoch
+                            Default: 7
+            verbose (bool): If True, prints a message for each validation loss improvement.
+                            如果是True，为每个验证集损失值改善打印一条信息
+                            Default: False
+            delta (float): Minimum change in the monitored quantity to qualify as an improvement.
+                            监测数量的最小变化，以符合改进的要求
+                            Default: 0
+        """
+        self.patience = patience
+        self.verbose = verbose
+        self.counter = 0
+        self.best_score = None
+        self.early_stop = False
+        self.val_loss_min = np.Inf
+        self.delta = delta
+	
+	
 def train(net, wholemat, evalmat, optimizer, batchsize=10, iter=1600, ):
     for epoch in range(iter):  # loop over the dataset multiple times
 
@@ -96,6 +121,7 @@ def train(net, wholemat, evalmat, optimizer, batchsize=10, iter=1600, ):
         input = wholemat[:,0:2].float()
 
         # zero the parameter gradients
+        early_stopping = EarlyStopping(patience=100, verbose=False,delta=0.00001)
         optimizer.zero_grad()
 
         # forward + backward + optimize
@@ -110,7 +136,16 @@ def train(net, wholemat, evalmat, optimizer, batchsize=10, iter=1600, ):
             # print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 2000:.3f}')
             print("training loss", loss)
             net.eval()
-            print("validation loss", torch.mean((net(evalmat[:,0:2].float()) - evalmat[:,2:4])**2))
+            val_loss = torch.mean((net(evalmat[:,0:2].float()) - evalmat[:,2:4])**2)
+            print("validation loss", val_loss)
+		
+        early_stopping(val_loss,net)
+        if early_stopping.early_stop:
+            print('Early Stopping')
+            break
+            
+    net=torch.load('checkpoint.pt')
 
     print('Finished Training')
     return net
+
