@@ -267,7 +267,7 @@ def train(net,wholemat,evalmat,device,lr,bs,num_epoch,patience,c1,c2,c3,verbose=
 
 def data_preprocessing(start,delta,epsilon,device):
     wholemat,evalmat=train_test_split(np.expand_dims(np.hstack((start.transpose(), start.transpose()+delta.transpose()*epsilon, 
-                                                                np.asarray([[epsilon]*64]).transpose())),1), train_size=0.8, random_state=2,shuffle=True)	
+                                                                np.asarray([[epsilon]*len(start[0])]).transpose())),1), train_size=0.8, random_state=2,shuffle=True)	
 
     wholemat=torch.tensor(wholemat).to(device)
     evalmat=torch.tensor(evalmat).to(device)
