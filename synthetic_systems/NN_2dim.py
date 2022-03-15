@@ -111,7 +111,35 @@ class EarlyStopping:
         self.early_stop = False
         self.val_loss_min = np.Inf
         self.delta = delta
-	
+
+    def __call__(self, val_loss, model):
+
+        score = -val_loss
+
+        if self.best_score is None:
+            self.best_score = score
+            self.save_checkpoint(val_loss, model)
+        elif score < self.best_score + self.delta:
+            self.counter += 1
+            if abs(self.counter-self.patience)<5:
+                print(f'EarlyStopping counter: {self.counter} out of {self.patience}')
+            if self.counter >= self.patience:
+                self.early_stop = True
+        else:
+            self.best_score = score
+            self.save_checkpoint(val_loss, model)
+            self.counter = 0
+
+    def save_checkpoint(self, val_loss, model):
+        '''
+        Saves model when validation loss decrease.
+        验证损失减少时保存模型。
+        '''
+        if self.verbose:
+            print(f'Validation loss decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
+        # torch.save(model.state_dict(), 'checkpoint.pt')     # 这里会存储迄今最优模型的参数
+        torch.save(model, 'checkpoint.pt')                 # 这里会存储迄今最优的模型
+        self.val_loss_min = val_loss
 	
 def train(net, wholemat, evalmat, optimizer, batchsize=10, iter=1600, ):
     for epoch in range(iter):  # loop over the dataset multiple times
