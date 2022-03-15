@@ -280,7 +280,7 @@ def classicIntNNH_autograd(z,h,model):
 		dim = int(len(z)/2)
 		q=z[:dim]
 		p=z[dim:]		
-		fstage = lambda stg: h * get_grad(model, z)[0]
+		fstage = lambda stg: h * get_grad(model, z,device)[0]
 
 		stageold=np.zeros(dim) 
 		stage = fstage(stageold) +0.
@@ -291,7 +291,7 @@ def classicIntNNH_autograd(z,h,model):
 			stage = fstage(stage)+0.
 			Iter = Iter+1
 		q = q+stage
-		p = p + h*get_grad(model, z)[1]
+		p = p + h*get_grad(model, z,device)[1]
 		return np.block([q,p])
 
 def classicTrajectoryNNH_autograd(z,h,model,N=1):
