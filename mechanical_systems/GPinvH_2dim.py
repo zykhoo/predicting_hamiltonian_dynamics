@@ -4,6 +4,25 @@ from scipy.linalg import cho_factor, cho_solve
 from tqdm import tqdm
 import numpy as np
 
+def LeapfrogGPdH(z,h,GP):
+## classical Leapfrog scheme for force field f
+# can compute multiple initial values simultanously, z[k]=list of k-component of all initial values
+	dim = int(len(z)/2)
+	z[dim:] = z[dim:]+h/2*GP.invmoddH(z.transpose())[0]*(-1)
+	z[:dim] = z[:dim]+h*z[dim:]
+	z[dim:] = z[dim:]+h/2*GP.invmoddH(z.transpose())[0]*(-1)
+	return z
+  
+def gen_one_trajGPdH(traj_len,start,h,GP,n_h = 800):
+  h_gen = h/n_h
+  x, final = start.copy(), start.copy()
+  for i in range(traj_len):
+    start=np.hstack((start,x))
+    for j in range(0,int(n_h+1)):
+      x=LeapfrogGPdH(x,h_gen,GP)
+    final=np.hstack((final,x))
+  return start[:,1:],final[:,1:]
+
 class ShadowSEuler():
 	
 	def classicInt(self,z,f1,f2,h,verbose = False):
