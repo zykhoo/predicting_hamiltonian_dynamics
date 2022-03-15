@@ -34,7 +34,7 @@ def classicTrajectory(z,f1,f2,h,N=10,n_h=800):
       trj[:,0]=classicInt(trj[:,0],f1,f2,h_gen)
     return z.reshape(-1,1), trj[:,0].reshape(-1,1)
   else:
-    for i in tqdm(range(0,N+1)):
+    for i in range(0,N+1):
       for j in range(0,int(n_h+1)):
         trj[:,i+1] = classicInt(trj[:,i].copy(),f1,f2,h_gen)
     return trj[:, :-1], trj[:, 1:]
