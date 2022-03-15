@@ -269,11 +269,11 @@ def train(net,bs,num_epoch,initial_conditions,device,wholemat,evalmat,x0,H0,dim,
     net=torch.load('checkpoint.pt')
     return net,avg_vallosses,avg_lossli,avg_f1li,avg_f2li,avg_f3li,avg_f4li
 
-def get_grad(model, z,device):
-    inputs=Variable(torch.tensor([z[0][0],z[1][0]]), requires_grad = True).to(device)
-    out=model(inputs.float())
-    dH=torch.autograd.grad(out, inputs, grad_outputs=out.data.new(out.shape).fill_(1),create_graph=True)[0]
-    return [dH.detach().cpu().numpy()[1], -dH.detach().cpu().numpy()[0]] # negative dH/dq is dp/dt
+def get_grad(model, z):
+		inputs=Variable(torch.tensor([z[0][0],z[1][0]]), requires_grad = True).to(device)
+		out=model(inputs.float())
+		dH=torch.autograd.grad(out, inputs, grad_outputs=out.data.new(out.shape).fill_(1),create_graph=True)[0]
+		return dH.detach().cpu().numpy()[1], -dH.detach().cpu().numpy()[0] # negative dH/dq is dp/dt
 
 def classicIntNNH_autograd(z,h,model,device):
 	## classical symplectic Euler scheme
