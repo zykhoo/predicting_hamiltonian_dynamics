@@ -84,7 +84,7 @@ def train(net, wholemat, evalmat, optimizer, batchsize=10, iter=1600, ):
         input = wholemat[:,0:2].float()
 
         # zero the parameter gradients
-	early_stopping = EarlyStopping(patience=100, verbose=False,delta=0.00001) # delta
+        early_stopping = EarlyStopping(patience=100, verbose=False,delta=0.00001) # delta
         optimizer.zero_grad()
 
         # forward + backward + optimize
@@ -102,7 +102,7 @@ def train(net, wholemat, evalmat, optimizer, batchsize=10, iter=1600, ):
             val_loss = torch.mean((net(evalmat[:,0:2].float()) - evalmat[:,2:4])**2)
             print("validation loss", val_loss)
 		
-	early_stopping(val_loss,net)
+        early_stopping(val_loss,net)
         if early_stopping.early_stop:
             print('Early Stopping')
             break
