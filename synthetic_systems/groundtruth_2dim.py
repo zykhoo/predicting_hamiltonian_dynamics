@@ -1,5 +1,7 @@
 from tqdm import tqdm
 import numpy as np
+from skopt.space import Space
+from skopt.sampler import Halton
 
 def classicInt(z,f1,f2,h):
 	## classical symplectic Euler scheme
@@ -37,3 +39,18 @@ def classicTrajectory(z,f1,f2,h,N=10,n_h=800):
         trj[:,i+1] = classicInt(trj[:,i].copy(),f1,f2,h_gen)
     return trj[:, :-1], trj[:, 1:]
 
+def CreateTrainingDataTrajClassicInt(traj_len,ini_con,spacedim,h,f1,f2,n_h = 800):
+  space = Space(spacedim)
+  h_gen = h/n_h
+  halton = Halton()
+  startcon = np.array(halton.generate(space, ini_con)).transpose()
+  finalcon = startcon.copy()
+  # Compute flow map from Halton sequence to generate learning data
+  if ini_con==1: return classicTrajectory(startcon,f1,f2,h,N=traj_len)
+  else:
+    start, final= classicTrajectory(np.squeeze(startcon[:,0]),f1,f2,h,N=traj_len)
+    for k in range(ini_con-1):
+      new_start, new_final = classicTrajectory(np.squeeze(startcon[:,k+1]),f1,f2,h,N=traj_len)
+      start = np.hstack((start, new_start))
+      final = np.hstack((final, new_final))
+  return start,final
