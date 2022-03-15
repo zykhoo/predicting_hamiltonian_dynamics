@@ -275,7 +275,7 @@ def get_grad(model, z,device):
     dH=torch.autograd.grad(out, inputs, grad_outputs=out.data.new(out.shape).fill_(1),create_graph=True)[0]
     return -dH.detach().cpu().numpy()[0] # negative dH/dq is dp/dt
 
-def classicIntNNH_autograd(z,h,model):
+def classicIntNNH_autograd(z,h,model,device):
 	## classical symplectic Euler scheme
 		dim = int(len(z)/2)
 		q=z[:dim]
@@ -294,7 +294,7 @@ def classicIntNNH_autograd(z,h,model):
 		p = p + h*get_grad(model, z,device)[1]
 		return np.block([q,p])
 
-def classicTrajectoryNNH_autograd(z,h,model,N=1):
+def classicTrajectoryNNH_autograd(z,h,model,device,N=1):
 	## trajectory computed with classicInt
   z = z.reshape(1,-1)[0]
   trj = np.zeros((len(z),N+2))
