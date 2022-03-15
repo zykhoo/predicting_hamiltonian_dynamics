@@ -36,7 +36,7 @@ def classicTrajectoryGPdH(z,h,GP,N=1):
   if N == 1:
     return z.reshape(-1,1), classicIntGPdH(trj[:,0].reshape(-1,1),h,GP).reshape(-1,1)
   else:
-    for j in tqdm(range(0,N+1)):
+    for j in range(0,N+1):
       trj[:,j+1] = classicIntGPdH(trj[:,j].reshape(-1,1).copy(),h,GP)
   return trj[:, :-1], trj[:, 1:]
 
