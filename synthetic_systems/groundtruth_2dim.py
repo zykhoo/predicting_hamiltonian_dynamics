@@ -1,3 +1,6 @@
+from tqdm import tqdm
+import numpy as np
+
 def classicInt(z,f1,f2,h):
 	## classical symplectic Euler scheme
 		dim = int(len(z)/2)
@@ -16,9 +19,6 @@ def classicInt(z,f1,f2,h):
 		q = q+stage
 		p = p + h*f2(np.block([q,p]))
 		return np.block([q,p])
-	
-from tqdm import tqdm
-
 
 def classicTrajectory(z,f1,f2,h,N=10,n_h=800):
 	## trajectory computed with classicInt
