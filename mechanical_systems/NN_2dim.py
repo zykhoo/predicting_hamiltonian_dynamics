@@ -84,7 +84,7 @@ def train(net, wholemat, evalmat, optimizer, batchsize=10, iter=1600, ):
         input = wholemat[:,0:2].float()
 
         # zero the parameter gradients
-        early_stopping = EarlyStopping(patience=100, verbose=False,delta=0.00001) # delta
+        early_stopping = EarlyStopping(patience=100, verbose=False,delta=0.00001)
         optimizer.zero_grad()
 
         # forward + backward + optimize
