@@ -34,6 +34,12 @@ def classicIntNN(z,h,net):
 		p = p +h*torch.squeeze(net(torch.tensor(z).float()),0).detach().numpy().transpose()[dim:]
 		return np.block([q,p])
 
+def classicqbarpbar(z,h,net):
+		dim = int(len(z)/2)		
+		qbar = torch.squeeze(net(torch.tensor(z).float()),0).detach().numpy().transpose()[:dim]
+		pbar = torch.squeeze(net(torch.tensor(z).float()),0).detach().numpy().transpose()[dim:]
+		return np.block([qbar,pbar])
+
 def classicTrajectoryNN(z,h,net,N=1):
 	## trajectory computed with classicInt
   z = z.reshape(1,-1)[0]
