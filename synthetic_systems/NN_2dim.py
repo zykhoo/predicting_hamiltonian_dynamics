@@ -40,6 +40,18 @@ def classicqbarpbar(z,h,net):
 		pbar = torch.squeeze(net(torch.tensor(z).float()),0).detach().numpy().transpose()[dim:]
 		return np.block([qbar,pbar])
 
+def classicTrajectorybar(z,h,net,N=1):
+	## trajectory computed with classicInt
+  z = z.reshape(1,-1)[0]
+  trj = np.zeros((len(z),N+2))
+  trj[:,0] = z.copy()
+  if N == 1:
+    return z.reshape(-1,1), classicqbarpbar(trj[:,0],h,net).reshape(-1,1)
+  else:
+    for j in tqdm(range(0,N+1)):
+      trj[:,j+1] = classicqbarpbar(trj[:,j].copy(),h,net)
+  return trj[:, :-1], trj[:, 1:]
+
 def classicTrajectoryNN(z,h,net,N=1):
 	## trajectory computed with classicInt
   z = z.reshape(1,-1)[0]
