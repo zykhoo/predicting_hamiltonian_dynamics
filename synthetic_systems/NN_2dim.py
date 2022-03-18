@@ -34,24 +34,6 @@ def classicIntNN(z,h,net):
 		p = p +h*torch.squeeze(net(torch.tensor(z).float()),0).detach().numpy().transpose()[dim:]
 		return np.block([q,p])
 
-def classicqbarpbar(z,h,net):
-		dim = int(len(z)/2)		
-		qbar = torch.squeeze(net(torch.tensor(z).float()),0).detach().numpy().transpose()[:dim]
-		pbar = torch.squeeze(net(torch.tensor(z).float()),0).detach().numpy().transpose()[dim:]
-		return np.block([qbar,pbar])
-
-def classicTrajectorybar(z,h,net,N=1):
-	## trajectory computed with classicInt
-  z = z.reshape(1,-1)[0]
-  trj = np.zeros((len(z),N+2))
-  trj[:,0] = z.copy()
-  if N == 1:
-    return z.reshape(-1,1), classicqbarpbar(trj[:,0],h,net).reshape(-1,1)
-  else:
-    for j in tqdm(range(0,N+1)):
-      trj[:,j+1] = classicqbarpbar(trj[:,j].copy(),h,net)
-  return trj[:, :-1], trj[:, 1:]
-
 def classicTrajectoryNN(z,h,net,N=1):
 	## trajectory computed with classicInt
   z = z.reshape(1,-1)[0]
@@ -63,6 +45,28 @@ def classicTrajectoryNN(z,h,net,N=1):
     for j in tqdm(range(0,N+1)):
       trj[:,j+1] = classicIntNN(trj[:,j].copy(),h,net)
   return trj[:, :-1], trj[:, 1:]
+
+def naiveIntNN(z,h,net):
+		dim = int(len(z)/2)
+		q=z[:dim]
+		p=z[dim:]		
+		dH = torch.squeeze(net(torch.tensor(z).float()),0).detach().numpy().transpose()
+		q = q +h*dH[:dim]
+		p = p +h*dH[dim:]
+		return np.block([q,p])
+
+def naiveIntNN(z,h,net,N=1):
+	## trajectory computed with classicInt
+  z = z.reshape(1,-1)[0]
+  trj = np.zeros((len(z),N+2))
+  trj[:,0] = z.copy()
+  if N == 1:
+    return z.reshape(-1,1), naiveIntNN(trj[:,0],h,net).reshape(-1,1)
+  else:
+    for j in tqdm(range(0,N+1)):
+      trj[:,j+1] = naiveIntNN(trj[:,j].copy(),h,net)
+  return trj[:, :-1], trj[:, 1:]
+
 
 # define model
 def softplus(x):
@@ -195,3 +199,20 @@ def train(net, wholemat, evalmat, optimizer, batchsize=10, iter=1600, ):
     print('Finished Training')
     return net
 
+def classicqbarpbar(z,h,net):
+		dim = int(len(z)/2)		
+		qbar = torch.squeeze(net(torch.tensor(z).float()),0).detach().numpy().transpose()[:dim]
+		pbar = torch.squeeze(net(torch.tensor(z).float()),0).detach().numpy().transpose()[dim:]
+		return np.block([qbar,pbar])
+
+def classicTrajectorybar(z,h,net,N=1):
+	## trajectory computed with classicInt
+  z = z.reshape(1,-1)[0]
+  trj = np.zeros((len(z),N+2))
+  trj[:,0] = z.copy()
+  if N == 1:
+    return z.reshape(-1,1), classicqbarpbar(trj[:,0],h,net).reshape(-1,1)
+  else:
+    for j in tqdm(range(0,N+1)):
+      trj[:,j+1] = classicqbarpbar(trj[:,j].copy(),h,net)
+  return trj[:, :-1], trj[:, 1:]
