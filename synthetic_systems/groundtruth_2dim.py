@@ -55,7 +55,8 @@ def CreateTrainingDataTrajClassicInt(traj_len,ini_con,spacedim,h,f1,f2,n_h = 800
       final = np.hstack((final, new_final))
   return start,final
 
-def CreateTrainingDataTrajClassicIntRandom(traj_len,ini_con,spacedim,h,f1,f2,n_h = 800):
+def CreateTrainingDataTrajClassicIntRandom(traj_len,ini_con,spacedim,h,f1,f2,seed,n_h = 800):
+  np.random.seed(seed = ini_con)
   startcon = np.random.uniform(spacedim[0][0], spacedim[0][1], size = ini_con)
   for i in range(len(spacedim)-1):
     startcon = np.vstack((startcon, np.random.uniform(spacedim[i+1][0], spacedim[i+1][1], size = ini_con)))
