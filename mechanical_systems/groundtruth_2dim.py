@@ -41,7 +41,7 @@ def CreateTrainingDataTrajLeapfrog(traj_len,ini_con,spacedim,h,forces,n_h = 800)
       final = np.hstack((final, new_final))
   return start,final
 
-def CreateTrainingDataTrajLeapfrogRandom(traj_len,ini_con,spacedim,h,f1,f2,seed,n_h = 800):
+def CreateTrainingDataTrajLeapfrogRandom(traj_len,ini_con,spacedim,h,forces,seed,n_h = 800):
   np.random.seed(seed = ini_con)
   startcon = np.random.uniform(spacedim[0][0], spacedim[0][1], size = ini_con)
   for i in range(len(spacedim)-1):
