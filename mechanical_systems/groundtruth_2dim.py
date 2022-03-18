@@ -40,3 +40,20 @@ def CreateTrainingDataTrajLeapfrog(traj_len,ini_con,spacedim,h,forces,n_h = 800)
       start = np.hstack((start, new_start))
       final = np.hstack((final, new_final))
   return start,final
+
+def CreateTrainingDataTrajLeapfrogRandom(traj_len,ini_con,spacedim,h,f1,f2,seed,n_h = 800):
+  np.random.seed(seed = ini_con)
+  startcon = np.random.uniform(spacedim[0][0], spacedim[0][1], size = ini_con)
+  for i in range(len(spacedim)-1):
+    startcon = np.vstack((startcon, np.random.uniform(spacedim[i+1][0], spacedim[i+1][1], size = ini_con)))
+  h_gen = h/n_h
+  finalcon = startcon.copy()
+  # Compute flow map from Halton sequence to generate learning data
+  if ini_con==1: return gen_one_traj(traj_len,startcon,h,forces)
+  else:
+    start,final=gen_one_traj(traj_len,startcon[:,0].reshape(-1,1),h,forces)
+    for k in range(ini_con-1):
+      new_start, new_final = gen_one_traj(traj_len,startcon[:,k+1].reshape(-1,1),h,forces)
+      start = np.hstack((start, new_start))
+      final = np.hstack((final, new_final))
+  return start,final
