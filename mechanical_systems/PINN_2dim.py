@@ -279,9 +279,9 @@ def LeapfrogNNH_autograd(z,h,model,device):
 ## classical Leapfrog scheme for force field f
 # can compute multiple initial values simultanously, z[k]=list of k-component of all initial values
 	dim = int(len(z)/2)
-	z[dim:] = z[dim:]+h/2*get_grad(model, z,device)
+	z[dim:] = z[dim:]+h/2*get_grad(model, z,device)[0]
 	z[:dim] = z[:dim]+h*z[dim:]
-	z[dim:] = z[dim:]+h/2*get_grad(model, z,device)
+	z[dim:] = z[dim:]+h/2*get_grad(model, z,device)[0]
 	return z
   
 def gen_one_trajNNH_autograd(traj_len,start,h,model,device,n_h = 800):
@@ -298,13 +298,13 @@ def get_grad(model, z,device):
     inputs=Variable(torch.tensor([z[0][0],z[1][0]]), requires_grad = True).to(device)
     out=model(inputs.float())
     dH=torch.autograd.grad(out, inputs, grad_outputs=out.data.new(out.shape).fill_(1),create_graph=True)[0]
-    return -dH.detach().cpu().numpy()[0] # negative dH/dq is dp/dt
+    return -dH.detach().cpu().numpy() # negative dH/dq is dp/dt
 
 def naiveIntNNH_autograd(z,h,model,device):
 ## classical Leapfrog scheme for force field f
 # can compute multiple initial values simultanously, z[k]=list of k-component of all initial values
 	dim = int(len(z)/2)
-	z[dim:] = z[dim:]+h*get_grad(model, z,device)
+	z[dim:] = z[dim:]+h*get_grad(model, z,device)[0]
 	z[:dim] = z[:dim]+h*z[dim:]
 	return z
   
