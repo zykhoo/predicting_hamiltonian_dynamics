@@ -27,6 +27,23 @@ def gen_one_trajGPdH(traj_len,start,h,GP,n_h = 800):
     final=np.hstack((final,x))
   return start[:,1:],final[:,1:]
 
+def naiveIntGPdH(z,h,GP):
+# can compute multiple initial values simultanously, z[k]=list of k-component of all initial values
+	dim = int(len(z)/2)
+	z[dim:] = z[dim:]+h*GP.dH(z.transpose())[0]*(-1)
+	z[:dim] = z[:dim]+h*z[dim:]
+	return z
+  
+def gen_one_traj_naiveGPdH(traj_len,start,h,GP,n_h = 800):
+  h_gen = h/n_h
+  x, final = start.copy(), start.copy()
+  for i in range(traj_len):
+    start=np.hstack((start,x))
+    for j in range(0,int(n_h+1)):
+      x=naiveIntGPdH(x,h_gen,GP)
+    final=np.hstack((final,x))
+  return start[:,1:],final[:,1:]
+
 class BertalanGP():
 	
 	def classicInt(self,z,f1,f2,h,verbose = False):
