@@ -1,6 +1,6 @@
 import numpy as np 
-from skopt.space import Space
-from skopt.sampler import Halton
+# from skopt.space import Space
+# from skopt.sampler import Halton
 
 def Leapfrog(z,h,f):
 ## classical Leapfrog scheme for force field f
