@@ -55,7 +55,7 @@ def naiveIntNN(z,h,net):
 		p = p +h*dH[dim:]
 		return np.block([q,p])
 
-def naiveIntNN(z,h,net,N=1):
+def naiveTrajectoryNN(z,h,net,N=1):
 	## trajectory computed with classicInt
   z = z.reshape(1,-1)[0]
   trj = np.zeros((len(z),N+2))
