@@ -14,7 +14,7 @@ def classicIntGPdH(z,h,GP):
 		dim = int(len(z)/2)
 		q=z[:dim]
 		p=z[dim:]		
-		fstage = lambda stg: h *GP.dH(z.transpose())[0]*(-1)
+		fstage = lambda stg: h *GP.dH(z.transpose())[1]
 
 		stageold=np.zeros(dim) 
 		stage = fstage(stageold) +0.
@@ -25,7 +25,7 @@ def classicIntGPdH(z,h,GP):
 			stage = fstage(stage)+0.
 			Iter = Iter+1
 		q = q+stage
-		p = p + -h*GP.dH(z.transpose())[1]*(-1)
+		p = p + -h*GP.dH(z.transpose())[0]
 		return np.block([q,p])
 
 def classicTrajectoryGPdH(z,h,GP,N=1):
