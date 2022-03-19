@@ -17,10 +17,10 @@ def naiveTrajectoryGP(z,h,gaussian_process,scaler,N=1):
   trj = np.zeros((len(z),N+2))
   trj[:,0] = z.copy()
   if N == 1:
-    return z.reshape(-1,1), naiveInt(trj[:,0].reshape(-1,1),h,gaussian_process,scaler).reshape(-1,1)
+    return z.reshape(-1,1), naiveIntGP(trj[:,0].reshape(-1,1),h,gaussian_process,scaler).reshape(-1,1)
   else:
     for j in range(0,N+1):
-      trj[:,j+1] = naiveInt(trj[:,j].reshape(-1,1).copy(),h,gaussian_process,scaler)
+      trj[:,j+1] = naiveIntGP(trj[:,j].reshape(-1,1).copy(),h,gaussian_process,scaler)
   return trj[:, :-1], trj[:, 1:]
 
 def classicIntGP(z,h,gaussian_process,scaler):
