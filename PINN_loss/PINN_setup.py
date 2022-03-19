@@ -9,6 +9,21 @@ import numpy as np
 import os
 import time
 
+def data_preprocessing(start_train, final_train,device):       
+    # wholemat=[]
+    # for i in range(len(start_train[0,:])):
+    #     wholemat.append(np.vstack((
+    #         np.hstack((start_train[:,i], (final_train[:,i]-start_train[:,i])/h)),
+    #         np.hstack((final_train[:,i], (final_train[:,i]-start_train[:,i])/h)))))
+    wholemat = np.hstack((start_train.transpose(), final_train.transpose()))
+
+    wholemat =torch.tensor(wholemat)
+    wholemat=wholemat.to(device)
+
+    wholemat,evalmat=train_test_split(wholemat, train_size=0.8, random_state=1)
+
+    return wholemat,
+
 def get_H_grad(model, z,device):
     inputs=Variable(torch.tensor([z[0][0],z[1][0]]), requires_grad = True).to(device)
     out=model(inputs.float())
