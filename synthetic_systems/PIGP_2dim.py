@@ -45,8 +45,8 @@ def naiveIntGPdH(z,h,GP):
 		dim = int(len(z)/2)
 		q=z[:dim]
 		p=z[dim:]		
-		q = q + h*GP.dH(z.transpose())[0]*(-1)
-		p = p + -h*GP.dH(z.transpose())[1]*(-1)
+		q = q + h*GP.dH(z.transpose())[1]
+		p = p + -h*GP.dH(z.transpose())[0]
 		return np.block([q,p])
 
 def naiveTrajectoryGPdH(z,h,GP,N=1):
