@@ -305,3 +305,24 @@ def classicTrajectoryNNH_autograd(z,h,model,device,N=1):
     for j in range(0,N+1):
       trj[:,j+1] = classicIntNNH_autograd(trj[:,j].reshape(-1,1).copy(),h,model,device)
   return trj[:, :-1], trj[:, 1:]
+
+def naiveIntNNH_autograd(z,h,model,device):
+	## classical symplectic Euler scheme
+		dim = int(len(z)/2)
+		q=z[:dim]
+		p=z[dim:]		
+		q = q + h*get_grad(model, z,device)[0]
+		p = p + h*get_grad(model, z,device)[1]
+		return np.block([q,p])
+
+def naiveTrajectoryNNH_autograd(z,h,model,device,N=1):
+	## trajectory computed with classicInt
+  z = z.reshape(1,-1)[0]
+  trj = np.zeros((len(z),N+2))
+  trj[:,0] = z.copy()
+  if N == 1:
+    return z.reshape(-1,1), naiveIntNNH_autograd(trj[:,0].reshape(-1,1),h,model,device).reshape(-1,1)
+  else:
+    for j in range(0,N+1):
+      trj[:,j+1] = naiveIntNNH_autograd(trj[:,j].reshape(-1,1).copy(),h,model,device)
+  return trj[:, :-1], trj[:, 1:]
