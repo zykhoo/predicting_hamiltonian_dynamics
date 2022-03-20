@@ -16,7 +16,7 @@ def gen_one_trajGP(traj_len,start,h,gaussian_process,scaler,n_h = 800):
   x, final = start.copy(), start.copy()
   for i in range(traj_len):
     start=np.hstack((start,x))
-    for j in range(0,int(n_h+1)):
+    for j in range(0,int(n_h)):
       x=LeapfrogGP(x,h_gen,gaussian_process,scaler)
     final=np.hstack((final,x))
   return start[:,1:],final[:,1:]
@@ -34,7 +34,7 @@ def gen_one_traj_naiveGP(traj_len,start,h,gaussian_process,scaler,n_h = 800):
   x, final = start.copy(), start.copy()
   for i in range(traj_len):
     start=np.hstack((start,x))
-    for j in range(0,int(n_h+1)):
+    for j in range(0,int(n_h)):
       x=naiveIntGP(x,h_gen,gaussian_process,scaler)
     final=np.hstack((final,x))
   return start[:,1:],final[:,1:]
