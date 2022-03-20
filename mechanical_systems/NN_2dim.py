@@ -22,7 +22,7 @@ def gen_one_traj_naiveNN(traj_len,start,model,h,n_h = 800):
   x, final = start.copy(),start.copy()
   for i in range(traj_len):
     start=np.hstack((start,x))
-    for j in range(0,int(n_h+1)):
+    for j in range(0,int(n_h)):
       x=naiveIntNN(x,h_gen,model)
     final=np.hstack((final,x))
   return start[:,1:],final[:,1:]
@@ -39,7 +39,7 @@ def gen_one_trajNN(traj_len,start,model,h,n_h = 800):
   x, final = start.copy(),start.copy()
   for i in range(traj_len):
     start=np.hstack((start,x))
-    for j in range(0,int(n_h+1)):
+    for j in range(0,int(n_h)):
       x=LeapfrogNN(x,h_gen,model)
     final=np.hstack((final,x))
   return start[:,1:],final[:,1:]
