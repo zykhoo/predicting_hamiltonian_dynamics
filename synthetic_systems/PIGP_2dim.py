@@ -24,6 +24,7 @@ def classicIntGPdH(z,h,GP):
 			stageold = stage+0.
 			stage = fstage(stage)+0.
 			Iter = Iter+1
+		print("Iterations", Iter)
 		q = q+stage
 		p = p + -h*GP.dH(z.transpose())[0]
 		return np.block([q,p])
