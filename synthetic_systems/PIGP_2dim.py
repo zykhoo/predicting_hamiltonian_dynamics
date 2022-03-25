@@ -20,7 +20,7 @@ def classicIntGPdH(z,h,GP):
 		stage = fstage(stageold) +0.
 		Iter = 0
 
-		while (np.amax(abs(stage - stageold)) > 1e-8 and Iter<100):
+		while (np.amax(abs(stage - stageold)) > 1e-10 and Iter<100):
 			stageold = stage+0.
 			stage = fstage(stage)+0.
 			Iter = Iter+1
