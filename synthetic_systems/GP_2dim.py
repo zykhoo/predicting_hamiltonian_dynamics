@@ -38,6 +38,7 @@ def classicIntGP(z,h,gaussian_process,scaler):
 			stageold = stage+0.
 			stage = fstage(stage)+0.
 			Iter = Iter+1
+		print("Iterations", Iter)
 		q = q+stage
 		p = p + h*gaussian_process.predict(scaler.transform(z.transpose()))[0][1]
 		return np.block([q,p])
