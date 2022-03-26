@@ -20,19 +20,18 @@ def classicIntNN(z,h,net):
 		dim = int(len(z)/2)
 		q=z[:dim]
 		p=z[dim:]		
-		fstage = lambda stg: h * torch.squeeze(net(torch.tensor(z).float()),0).detach().numpy().transpose()[:dim]
+		fstage = lambda stg: h * torch.squeeze(net(torch.tensor([q+stg,p]).float().transpose(1,0)),0).detach().numpy().transpose()[:dim]
 
 		stageold=np.zeros(dim) 
 		stage = fstage(stageold) +0.
 		Iter = 0
 
-		while (np.amax(abs(stage - stageold)) > 1e-10 and Iter<100):
+		while (np.amax(abs(stage - stageold)*25) > 1e-10 and Iter<100):
 			stageold = stage+0.
 			stage = fstage(stage)+0.
 			Iter = Iter+1
-		print("Iterations", Iter)
 		q = q+stage
-		p = p +h*torch.squeeze(net(torch.tensor(z).float()),0).detach().numpy().transpose()[dim:]
+		p = p +h*torch.squeeze(net(torch.tensor([q,p]).float().transpose(1,0)),0).detach().numpy().transpose()[dim:]
 		return np.block([q,p])
 
 def classicTrajectoryNN(z,h,net,N=1):
