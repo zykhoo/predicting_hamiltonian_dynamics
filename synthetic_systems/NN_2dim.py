@@ -15,7 +15,7 @@ import torch.optim as optim
 
 from tqdm import tqdm
 
-def classicIntNN(z,h,net,N):
+def classicIntNN(z,h,net):
 	## classical symplectic Euler scheme
 		dim = int(len(z)/2)
 		q=z[:dim]
@@ -30,7 +30,6 @@ def classicIntNN(z,h,net,N):
 			stageold = stage+0.
 			stage = fstage(stage)+0.
 			Iter = Iter+1
-		if N>10:print("iterations", Iter)
 		q = q+stage
 		p = p +h*torch.squeeze(net(torch.tensor([q,p]).float().transpose(1,0)),0).detach().numpy().transpose()[dim:]
 		return np.block([q,p])
@@ -41,10 +40,10 @@ def classicTrajectoryNN(z,h,net,N=1):
   trj = np.zeros((len(z),N+2))
   trj[:,0] = z.copy()
   if N == 1:
-    return z.reshape(-1,1), classicIntNN(trj[:,0],h,net,N).reshape(-1,1)
+    return z.reshape(-1,1), classicIntNN(trj[:,0],h,net).reshape(-1,1)
   else:
     for j in tqdm(range(0,N+1)):
-      trj[:,j+1] = classicIntNN(trj[:,j].copy(),h,net,N)
+      trj[:,j+1] = classicIntNN(trj[:,j].copy(),h,net)
   return trj[:, :-1], trj[:, 1:]
 
 def naiveIntNN(z,h,net):
