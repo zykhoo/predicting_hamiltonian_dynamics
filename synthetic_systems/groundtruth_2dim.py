@@ -18,7 +18,6 @@ def classicInt(z,f1,f2,h):
 			stageold = stage+0.
 			stage = fstage(stage)+0.
 			Iter = Iter+1
-		print("Iterations", Iter)
 		q = q+stage
 		p = p + h*f2(np.block([q,p]))
 		return np.block([q,p])
