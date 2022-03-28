@@ -31,8 +31,8 @@ class Net(nn.Module):
 
         return x
 
-# calculate loss, c1,c2,c3,c4 = 1,10,1,1 default
-def lossfuc(model,mat,x,y,device,x0,H0,dim,c1=1,c2=10,c3=1,c4=1,verbose=False):
+# calculate loss
+def lossfuc(model,mat,x,y,device,x0,H0,dim,c1,c2,c3,c4,verbose=False):
     if dim ==2:
       f3=(model(torch.tensor([[x0,x0]]).to(device))-torch.tensor([[H0]]).to(device))**2
       dH=torch.autograd.grad(y, x, grad_outputs=y.data.new(y.shape).fill_(1),create_graph=True)[0]
@@ -84,7 +84,7 @@ def data_preprocessing(start_train, final_train,device):
 
 ## train
 
-# evaluate loss of dataset use c1,c2,c3,c4=1,10,1,1
+# evaluate loss of dataset 
 def get_loss(model,device,initial_conditions,bs,x0,H0,dim,wholemat,evalmat,trainset=False,verbose=False):
     # this function is used to calculate average loss of a whole dataset
     # rootpath: path of set to be calculated loss
@@ -216,7 +216,7 @@ def train(net,bs,num_epoch,initial_conditions,device,wholemat,evalmat,x0,H0,dim,
             x=Variable(torch.tensor(mat[:,:dim]).float(),requires_grad=True)
             y=net(x)
 
-            loss,f1,f2,f3,f4=lossfuc(net,mat,x,y,device,x0,H0,dim,c2,c3,c4)  
+            loss,f1,f2,f3,f4=lossfuc(net,mat,x,y,device,x0,H0,dim,c1,c2,c3,c4)  
             loss.backward()
             torch.nn.utils.clip_grad_norm(net.parameters(), 1)
 
