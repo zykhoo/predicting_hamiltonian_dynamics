@@ -52,8 +52,8 @@ class Net(nn.Module):
 
         return x
 
-# calculate loss, c1,c2,c3,c4 = 1,10,1,1 default
-def lossfuc(model,mat,x,y,device,x0,H0,dim,c1=1,c2=10,c3=1,c4=1,c5=1,verbose=False):
+# calculate loss,
+def lossfuc(model,mat,x,y,device,x0,H0,dim,c1,c2,c3,c4,c5=0,verbose=False):
     f3=(model(torch.tensor([[0.,0.]]).to(device))-torch.tensor([[0.]]).to(device))**2
     dH=torch.autograd.grad(y, x, grad_outputs=y.data.new(y.shape).fill_(1),create_graph=True)[0]
     dHdq=dH[:,0]
