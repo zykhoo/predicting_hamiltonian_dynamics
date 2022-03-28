@@ -85,7 +85,7 @@ def data_preprocessing(start_train, final_train,device):
 ## train
 
 # evaluate loss of dataset 
-def get_loss(model,device,initial_conditions,bs,x0,H0,dim,wholemat,evalmat,trainset=False,verbose=False):
+def get_loss(model,device,initial_conditions,bs,x0,H0,dim,wholemat,evalmat,c1,c2,c3,c4,trainset=False,verbose=False):
     # this function is used to calculate average loss of a whole dataset
     # rootpath: path of set to be calculated loss
     # model: model
@@ -250,7 +250,7 @@ def train(net,bs,num_epoch,initial_conditions,device,wholemat,evalmat,x0,H0,dim,
         
         # evaluate
         net.eval()
-        avg_val_loss=get_loss(net,device,len(evalmat),bs,x0,H0,dim,wholemat,evalmat)
+        avg_val_loss=get_loss(net,device,len(evalmat),bs,x0,H0,dim,wholemat,evalmat,c1,c2,c3,c4)
         avg_vallosses.append(avg_val_loss)
         
         if epoch % 10 == 0 : 
