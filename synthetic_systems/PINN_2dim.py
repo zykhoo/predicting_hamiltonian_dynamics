@@ -106,7 +106,7 @@ def get_loss(model,device,initial_conditions,bs,x0,H0,dim,wholemat,evalmat,train
       x=Variable((curmat[:,:dim]).float(),requires_grad=True)
       y=model(x)
       x=x.to(device)
-      loss,f1,f2,f3,f4=lossfuc(model,curmat,x,y,device,x0,H0,dim)
+      loss,f1,f2,f3,f4=lossfuc(model,curmat,x,y,device,x0,H0,dim,c1,c2,c3,c4)
       avg_loss+=loss.detach().cpu().item()
       avg_f1+=f1.detach().cpu().item()
       avg_f2+=f2.detach().cpu().item()
