@@ -81,7 +81,6 @@ def data_preprocessing(start_train, final_train,device):
 
 ## train
 
-# evaluate loss of dataset use c1,c2,c3,c4=1,10,1,1
 def get_loss(model,device,initial_conditions,bs,x0,H0,dim,wholemat,evalmat,trainset=False,verbose=False):
     # this function is used to calculate average loss of a whole dataset
     # rootpath: path of set to be calculated loss
@@ -270,7 +269,7 @@ def get_grad(model, z,device):
 		inputs=Variable(torch.tensor(z), requires_grad = True).to(device)
 		out=model(torch.transpose(inputs,1,0).float())
 		dH=torch.autograd.grad(out, inputs, grad_outputs=out.data.new(out.shape).fill_(1),create_graph=True)[0]
-		return dH.detach().cpu().numpy()[1], -dH.detach().cpu().numpy()[0] # negative dH/dq is dp/dt
+		return z[0][1], -dH.detach().cpu().numpy()[0] # p is dq/dt, negative dH/dq is dp/dt
   
 def classicIntNNH_autograd(z,h,model,device):
 	## classical symplectic Euler scheme
