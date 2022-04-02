@@ -269,7 +269,7 @@ def get_grad(model, z,device):
 		inputs=Variable(torch.tensor(z), requires_grad = True).to(device)
 		out=model(torch.transpose(inputs,1,0).float())
 		dH=torch.autograd.grad(out, inputs, grad_outputs=out.data.new(out.shape).fill_(1),create_graph=True)[0]
-		return z[0][1], -dH.detach().cpu().numpy()[0] # p is dq/dt, negative dH/dq is dp/dt
+		return z[1], -dH.detach().cpu().numpy()[0] # p is dq/dt, negative dH/dq is dp/dt
   
 def classicIntNNH_autograd(z,h,model,device):
 	## classical symplectic Euler scheme
