@@ -280,7 +280,6 @@ def classicIntNNH_autograd(z,h,model,device):
 		dim = int(len(z)/2)
 		q=z[:dim]
 		p=z[dim:]		
-		print(z)
 		fstage = lambda stg: h * get_grad(model, np.concatenate([q+stg,p]),device)[0]
 
 		stageold=np.zeros(dim) 
