@@ -75,7 +75,7 @@ def classicTrajectorybar(z,h,gaussian_process,scaler,N=1):
       trj[:,j+1] = classicqbarpbar(trj[:,j].reshape(-1,1).copy(),h,gaussian_process,scaler)
   return trj[:, :-1], trj[:, 1:]
 
-def compute_metrics_GP(gp, h, diagdist, xshort, yshort, xlong, ylong, eval_len, len_within, long_groundtruth, len_short, truevector):
+def compute_metrics_GP(gp, scaler, h, diagdist, xshort, yshort, xlong, ylong, eval_len, len_within, long_groundtruth, len_short, truevector):
     results_start = np.asarray(classicTrajectoryGP(np.asarray([[0.4],[0.]]),h,gp,scaler,N=eval_len))
     withinspace_longtraj_symplectic_MSe = MSE(long_groundtruth[0,1,:,:], results_start[1,:,:], diagdist)
     results_start = np.asarray(naiveTrajectoryGP(np.asarray([[0.4],[0.]]),h,gp, scaler,N=eval_len))
