@@ -330,9 +330,9 @@ def naiveTrajectoryNNH_autograd(z,h,model,device,N=1):
   return trj[:, :-1], trj[:, 1:]
 
 def compute_metrics_PINN(nn, device, h, diagdist, xshort, yshort, xlong, ylong, eval_len, len_within, long_groundtruth, len_short, truevector):
-    results_start = np.asarray(classicTrajectoryNNH_autograd(np.asarray([[0.4],[0.]]),h = 0.1,model=nn,device=device,N=evaluation_length_long)) 
+    results_start = np.asarray(classicTrajectoryNNH_autograd(np.asarray([[0.4],[0.]]),h = 0.1,model=nn,device=device,N=eval_len)) 
     withinspace_longtraj_symplectic_MSe = MSE(trajectories_groundtruth_start_long[0,1,:,:], results_start[1,:,:], diagdist)
-    results_start = np.asarray(naiveTrajectoryNNH_autograd(np.asarray([[0.4],[0.]]),h = 0.1,model=nn,device=device,N=evaluation_length_long))
+    results_start = np.asarray(naiveTrajectoryNNH_autograd(np.asarray([[0.4],[0.]]),h = 0.1,model=nn,device=device,N=eval_len))
     withinspace_longtraj_naive_MSe = MSE(trajectories_groundtruth_start_long[0,1,:,:], results_start[1,:,:], diagdist)
 
     MSE_long, time_long, MSE_long_naive, time_long_naive, MSE_within, time_within, MSE_within_naive, time_within_naive, MSE_onestep, time_onestep, MSE_vectorfield, time_vectorfield = 0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.
