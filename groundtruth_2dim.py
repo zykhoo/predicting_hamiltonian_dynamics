@@ -72,14 +72,14 @@ def CreateTrainingDataTrajClassicIntRandom(traj_len,ini_con,spacedim,h,f1,f2,see
       final = np.hstack((final, new_final))
   return start,final
 
-def get_within_array(trajectories_groundtruth_start_long, spacedim):
+def get_within_array(trajectories, spacedim):
   within_array = np.asarray([])
-  for i in range(len(trajectories_groundtruth_long_within)):
+  for i in range(len(trajectories)):
     np.sum(np.square(np.asarray([spacedim[0][0], spacedim[0][1]]), np.asarray([spacedim[1][0], spacedim[1][1]])))
     try:
-      v = np.amin(np.concatenate((np.where(trajectories_groundtruth_start_long[i][1][0]<spacedim[0][0])[0],np.where(trajectories_groundtruth_start_long[i][1][0]>spacedim[0][1])[0], 
-              np.where(trajectories_groundtruth_start_long[i][1][1]<spacedim[1][0])[0], np.where(trajectories_groundtruth_start_long[i][1][1]>spacedim[1][1])[0])))
+      v = np.amin(np.concatenate((np.where(trajectories[i][1][0]<spacedim[0][0])[0],np.where(trajectories[i][1][0]>spacedim[0][1])[0], 
+              np.where(trajectories[i][1][1]<spacedim[1][0])[0], np.where(trajectories[i][1][1]>spacedim[1][1])[0])))
       within_array = np.append(within_array, v)
     except ValueError:
-      within_array = np.append(within_array, len(trajectories_groundtruth_start_long[i][1][1]))
+      within_array = np.append(within_array, len(trajectories[i][1][1]))
     return within_array
