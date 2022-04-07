@@ -264,9 +264,9 @@ class BertalanGP():
 
 def compute_metrics_PIGP(GP, h, diagdist, xshort, yshort, xlong, ylong, eval_len, len_within, long_groundtruth, len_short, truevector):
     results_start = np.asarray(classicTrajectoryGPdH(np.asarray([[0.4],[0.]]),h = 0.1,GP=GP,N=eval_len))
-    withinspace_longtraj_symplectic_MSe = MSE(trajectories_groundtruth_start_long[0,1,:,:], results_start[1,:,:], diagdist)
+    withinspace_longtraj_symplectic_MSe = MSE(long_groundtruth[0,1,:,:], results_start[1,:,:], diagdist)
     results_start = np.asarray(naiveTrajectoryGPdH(np.asarray([[0.4],[0.]]),GP=GP,h = 0.1,N=eval_len,))
-    withinspace_longtraj_naive_MSe = MSE(trajectories_groundtruth_start_long[0,1,:,:], results_start[1,:,:], diagdist)
+    withinspace_longtraj_naive_MSe = MSE(long_groundtruth[0,1,:,:], results_start[1,:,:], diagdist)
 
     MSE_long, time_long, MSE_long_naive, time_long_naive, MSE_within, time_within, MSE_within_naive, time_within_naive, MSE_onestep, time_onestep, MSE_vectorfield, time_vectorfield = 0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.
     count = 1
