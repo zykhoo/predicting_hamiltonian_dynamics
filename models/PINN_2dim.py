@@ -330,20 +330,20 @@ def naiveTrajectoryNNH_autograd(z,h,model,device,N=1):
   return trj[:, :-1], trj[:, 1:]
 
 def compute_metrics_PINN(nn, device, h, diagdist, xshort, yshort, xlong, ylong, eval_len, len_within, long_groundtruth, len_short, truevector):
-    results_start = np.asarray(classicTrajectoryNNH_autograd(np.asarray([[0.4],[0.]]),h = 0.1,model=nn,device=device,N=eval_len)) 
+    results_start = np.asarray(classicTrajectoryNNH_autograd(np.asarray([[0.4],[0.]]),h,model=nn,device=device,N=eval_len)) 
     withinspace_longtraj_symplectic_MSe = MSE(long_groundtruth[0,1,:,:], results_start[1,:,:], diagdist)
-    results_start = np.asarray(naiveTrajectoryNNH_autograd(np.asarray([[0.4],[0.]]),h = 0.1,model=nn,device=device,N=eval_len))
+    results_start = np.asarray(naiveTrajectoryNNH_autograd(np.asarray([[0.4],[0.]]),h,model=nn,device=device,N=eval_len))
     withinspace_longtraj_naive_MSe = MSE(long_groundtruth[0,1,:,:], results_start[1,:,:], diagdist)
 
     MSE_long, time_long, MSE_long_naive, time_long_naive, MSE_within, time_within, MSE_within_naive, time_within_naive, MSE_onestep, time_onestep, MSE_vectorfield, time_vectorfield = 0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.
     count = 1
     for i in tqdm(np.expand_dims(np.c_[np.ravel(xlong),np.ravel(ylong)],2)):
       starttime = time.time()
-      results_start = np.asarray(classicTrajectoryNNH_autograd(i,h = 0.1,model=nn,device=device,N=eval_len)) 
+      results_start = np.asarray(classicTrajectoryNNH_autograd(i,h,model=nn,device=device,N=eval_len)) 
       time_long += time.time()-starttime
       MSE_long += MSE(long_groundtruth[count,1,:,:], results_start[1,:,:], diagdist)
       starttime = time.time()
-      results_start = np.asarray(naiveTrajectoryNNH_autograd(i,h = 0.1,model=nn,device=device,N=eval_len,))
+      results_start = np.asarray(naiveTrajectoryNNH_autograd(i,h,model=nn,device=device,N=eval_len,))
       time_long_naive += time.time()-starttime
       MSE_long_naive += MSE(long_groundtruth[count,1,:,:], results_start[1,:,:], diagdist)
       steps = int(len_within[count-1])
@@ -352,18 +352,18 @@ def compute_metrics_PINN(nn, device, h, diagdist, xshort, yshort, xlong, ylong, 
         pass
       else: 
         starttime = time.time()
-        results_start = np.asarray(classicTrajectoryNNH_autograd(i,h = 0.1,model=nn,device=device,N=steps-1)) 
+        results_start = np.asarray(classicTrajectoryNNH_autograd(i,h,model=nn,device=device,N=steps-1)) 
         time_within += time.time()-starttime
         MSE_within += MSE(long_groundtruth[count,1,:,:steps], results_start[1,:,:], diagdist)
         starttime = time.time()
-        results_start = np.asarray(naiveTrajectoryNNH_autograd(i,h = 0.1,model=nn,device=device,N=steps-1,))
+        results_start = np.asarray(naiveTrajectoryNNH_autograd(i,h,model=nn,device=device,N=steps-1,))
         time_within_naive += time.time()-starttime
         MSE_within_naive += MSE(long_groundtruth[count,1,:,:steps], results_start[1,:,:], diagdist)
       count+=1 
     count = 1
     for i in tqdm(np.expand_dims(np.c_[np.ravel(xshort),np.ravel(yshort)],2)):
       starttime = time.time()
-      results_start = np.asarray(classicTrajectoryNNH_autograd(i,h = 0.1,model=nn,device=device,N=1)) 
+      results_start = np.asarray(classicTrajectoryNNH_autograd(i,h,model=nn,device=device,N=1)) 
       time_onestep += time.time()-starttime
       MSE_onestep += MSE(len_short[count,1,:,:], results_start[1,:,:], diagdist)
       starttime = time.time()
