@@ -1,7 +1,7 @@
 # GP takes in q and p and learns the derivative dq/dt, dp/dt
 from ..metrics import MSE
 from tqdm import tqdm
-
+import time
 
 import numpy as np 
 
