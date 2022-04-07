@@ -82,4 +82,4 @@ def get_within_array(trajectories, spacedim):
       within_array = np.append(within_array, v)
     except ValueError:
       within_array = np.append(within_array, len(trajectories[i][1][1]))
-    return within_array
+  return within_array
