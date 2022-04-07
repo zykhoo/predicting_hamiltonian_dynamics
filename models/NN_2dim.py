@@ -15,7 +15,7 @@ import torch.optim as optim
 
 from tqdm import tqdm
 
-from .. import metrics
+from ..metrics import MSE
 
 def classicIntNN(z,h,net):
 	## classical symplectic Euler scheme
@@ -221,9 +221,9 @@ def classicTrajectorybar(z,h,net,N=1):
     
 def compute_metrics_NN(nn, eval_len, len_within, long_groundtruth, len_short, truevector):
     results_start = np.asarray(classicTrajectoryNN(np.asarray([[0.4],[0.]]),h,nn,N=eval_len)) 
-    withinspace_longtraj_symplectic_MSe = metrics.MSE(long_groundtruth[0,1,:,:], results_start[1,:,:], diagdist)
+    withinspace_longtraj_symplectic_MSe = MSE(long_groundtruth[0,1,:,:], results_start[1,:,:], diagdist)
     results_start = np.asarray(naiveTrajectoryNN(np.asarray([[0.4],[0.]]),h,nn,N=eval_len))
-    withinspace_longtraj_naive_MSe = metrics.MSE(long_groundtruth[0,1,:,:], results_start[1,:,:], diagdist)
+    withinspace_longtraj_naive_MSe = MSE(long_groundtruth[0,1,:,:], results_start[1,:,:], diagdist)
 
     MSE_long, time_long, MSE_long_naive, time_long_naive, MSE_within, time_within, MSE_within_naive, time_within_naive, MSE_onestep, time_onestep, MSE_vectorfield, time_vectorfield = 0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.
     count = 1
@@ -231,11 +231,11 @@ def compute_metrics_NN(nn, eval_len, len_within, long_groundtruth, len_short, tr
       starttime = time.time()
       results_start = np.asarray(classicTrajectoryNN(i,h,nn,N=eval_len)) 
       time_long += time.time()-starttime
-      MSE_long += metrics.MSE(long_groundtruth[count,1,:,:], results_start[1,:,:], diagdist)
+      MSE_long += MSE(long_groundtruth[count,1,:,:], results_start[1,:,:], diagdist)
       starttime = time.time()
       results_start = np.asarray(naiveTrajectoryNN(i,h,nn,N=eval_len))
       time_long_naive += time.time()-starttime
-      MSE_long_naive += metrics.MSE(long_groundtruth[count,1,:,:], results_start[1,:,:], diagdist)
+      MSE_long_naive += MSE(long_groundtruth[count,1,:,:], results_start[1,:,:], diagdist)
       steps = int(len_within[count-1])
       supp = (len_within>0).sum()
       if steps == 0:
@@ -244,21 +244,21 @@ def compute_metrics_NN(nn, eval_len, len_within, long_groundtruth, len_short, tr
         starttime = time.time()
         results_start = np.asarray(classicTrajectoryNN(i,h,nn,N=steps-1))
         time_within += time.time()-starttime
-        MSE_within += metrics.MSE(long_groundtruth[count,1,:,:steps], results_start[1,:,:], diagdist)
+        MSE_within += MSE(long_groundtruth[count,1,:,:steps], results_start[1,:,:], diagdist)
         starttime = time.time()
         results_start = np.asarray(naiveTrajectoryNN(i,h,nn,N=steps-1))
         time_within_naive += time.time()-starttime
-        MSE_within_naive += metrics.MSE(long_groundtruth[count,1,:,:steps], results_start[1,:,:], diagdist)
+        MSE_within_naive += MSE(long_groundtruth[count,1,:,:steps], results_start[1,:,:], diagdist)
       count+=1 
     count = 1
     for i in tqdm(np.expand_dims(np.c_[np.ravel(xshort),np.ravel(yshort)],2)):
       starttime = time.time()
       results_start = np.asarray(classicTrajectoryNN(i,h,nn,N=1)) 
       time_onestep += time.time()-starttime
-      MSE_onestep += metrics.MSE(len_short[count,1,:,:], results_start[1,:,:], diagdist)
+      MSE_onestep += MSE(len_short[count,1,:,:], results_start[1,:,:], diagdist)
       starttime = time.time()
       vectorfield = torch.squeeze(nn(torch.transpose(torch.tensor(i).float(),1,0)),0).detach().numpy().transpose().flatten()
       time_vectorfield += time.time()-starttime
-      MSE_vectorfield += metrics.MSE(truevector(len_short[count,0,:,:].flatten()), vectorfield, diagdist)
+      MSE_vectorfield += MSE(truevector(len_short[count,0,:,:].flatten()), vectorfield, diagdist)
       count+=1
     return MSE_long/25, time_long, MSE_long_naive/25, time_long_naive, MSE_within/supp, time_within, MSE_within_naive/supp, time_within_naive, MSE_onestep/400, time_onestep, MSE_vectorfield/400, time_vectorfield/400, withinspace_longtraj_symplectic_MSe, withinspace_longtraj_naive_MSe
