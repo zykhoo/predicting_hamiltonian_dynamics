@@ -367,7 +367,7 @@ def compute_metrics_PINN(nn, device, h, diagdist, xshort, yshort, xlong, ylong, 
       time_onestep += time.time()-starttime
       MSE_onestep += MSE(len_short[count,1,:,:], results_start[1,:,:], diagdist)
       starttime = time.time()
-      dH = get_grad(net, i,device)
+      dH = get_grad(nn, i,device)
       vectorfield = np.asarray([dH[0],dH[1]])
       time_vectorfield += time.time()-starttime
       MSE_vectorfield += MSE(truevector(len_short[count,0,:,:].flatten()), vectorfield, diagdist)
