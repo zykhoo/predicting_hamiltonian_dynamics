@@ -278,11 +278,11 @@ def compute_metrics_PIGP(GP, h, diagdist, xshort, yshort, xlong, ylong, eval_len
       if steps == 0:
         pass
       else: 
-        results_start = np.asarray(classicTrajectoryGPdH(i,h = 0.1,GP=GP,N=steps-1))
+        results_start = np.asarray(classicTrajectoryGPdH(i,h = 0.1,GP=GP,N=steps))
         time_within += time.time()-starttime
         MSE_within += MSE(long_groundtruth[count,1,:,:steps], results_start[1,:,:], diagdist)
         starttime = time.time()
-        results_start = np.asarray(naiveTrajectoryGPdH(i,GP=GP,h = 0.1,N=steps-1))
+        results_start = np.asarray(naiveTrajectoryGPdH(i,GP=GP,h = 0.1,N=steps))
         time_within_naive += time.time()-starttime
         MSE_within_naive += MSE(long_groundtruth[count,1,:,:steps], results_start[1,:,:], diagdist)
       count+=1 
