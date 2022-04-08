@@ -41,7 +41,7 @@ def classicTrajectoryNN(z,h,net,N=1):
   z = z.reshape(1,-1)[0]
   trj = np.zeros((len(z),N+1))
   trj[:,0] = z.copy()
-  for j in tqdm(range(0,N+1)):
+  for j in tqdm(range(0,N)):
     trj[:,j+1] = classicIntNN(trj[:,j].copy(),h,net)
   return trj[:, :-1], trj[:, 1:]
 
@@ -59,7 +59,7 @@ def naiveTrajectoryNN(z,h,net,N=1):
   z = z.reshape(1,-1)[0]
   trj = np.zeros((len(z),N+1))
   trj[:,0] = z.copy()
-  for j in tqdm(range(0,N+1)):
+  for j in tqdm(range(0,N)):
     trj[:,j+1] = naiveIntNN(trj[:,j].copy(),h,net)
   return trj[:, :-1], trj[:, 1:]
 
