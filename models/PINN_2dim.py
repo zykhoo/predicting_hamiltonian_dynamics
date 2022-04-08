@@ -299,13 +299,10 @@ def classicIntNNH_autograd(z,h,model,device):
 def classicTrajectoryNNH_autograd(z,h,model,device,N=1):
 	## trajectory computed with classicInt
   z = z.reshape(1,-1)[0]
-  trj = np.zeros((len(z),N+2))
+  trj = np.zeros((len(z),N+1))
   trj[:,0] = z.copy()
-  if N == 1:
-    return z.reshape(-1,1), classicIntNNH_autograd(trj[:,0].reshape(-1,1),h,model,device).reshape(-1,1)
-  else:
-    for j in range(0,N+1):
-      trj[:,j+1] = classicIntNNH_autograd(trj[:,j].reshape(-1,1).copy(),h,model,device)
+  for j in range(0,N+1):
+    trj[:,j+1] = classicIntNNH_autograd(trj[:,j].reshape(-1,1).copy(),h,model,device)
   return trj[:, :-1], trj[:, 1:]
 
 def naiveIntNNH_autograd(z,h,model,device):
@@ -320,13 +317,10 @@ def naiveIntNNH_autograd(z,h,model,device):
 def naiveTrajectoryNNH_autograd(z,h,model,device,N=1):
 	## trajectory computed with classicInt
   z = z.reshape(1,-1)[0]
-  trj = np.zeros((len(z),N+2))
+  trj = np.zeros((len(z),N+1))
   trj[:,0] = z.copy()
-  if N == 1:
-    return z.reshape(-1,1), naiveIntNNH_autograd(trj[:,0].reshape(-1,1),h,model,device).reshape(-1,1)
-  else:
-    for j in range(0,N+1):
-      trj[:,j+1] = naiveIntNNH_autograd(trj[:,j].reshape(-1,1).copy(),h,model,device)
+  for j in range(0,N+1):
+    trj[:,j+1] = naiveIntNNH_autograd(trj[:,j].reshape(-1,1).copy(),h,model,device)
   return trj[:, :-1], trj[:, 1:]
 
 def compute_metrics_PINN(nn, device, h, diagdist, xshort, yshort, xlong, ylong, eval_len, len_within, long_groundtruth, len_short, truevector):
