@@ -89,11 +89,11 @@ def compute_metrics_GP(gp, scaler, h, diagdist, xshort, yshort, xlong, ylong, ev
         pass
       else: 
         starttime = time.time()
-        results_start = np.asarray(classicTrajectoryGP(i,h,gp,scaler,N=steps-1))
+        results_start = np.asarray(classicTrajectoryGP(i,h,gp,scaler,N=steps))
         time_within += time.time()-starttime
         MSE_within += MSE(long_groundtruth[count,1,:,:steps], results_start[1,:,:], diagdist)
         starttime = time.time()
-        results_start = np.asarray(naiveTrajectoryGP(i,h,gp, scaler,N=steps-1))
+        results_start = np.asarray(naiveTrajectoryGP(i,h,gp, scaler,N=steps))
         time_within_naive += time.time()-starttime
         MSE_within_naive += MSE(long_groundtruth[count,1,:,:steps], results_start[1,:,:], diagdist)
       count+=1 
