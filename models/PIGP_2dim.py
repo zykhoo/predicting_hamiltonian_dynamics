@@ -35,7 +35,7 @@ def classicTrajectoryGPdH(z,h,GP,N=1):
   z = z.reshape(1,-1)[0]
   trj = np.zeros((len(z),N+1))
   trj[:,0] = z.copy()
-  for j in range(0,N+1):
+  for j in range(0,N):
     trj[:,j+1] = classicIntGPdH(trj[:,j].reshape(-1,1).copy(),h,GP)
   return trj[:, :-1], trj[:, 1:]
 
@@ -53,7 +53,7 @@ def naiveTrajectoryGPdH(z,h,GP,N=1):
   z = z.reshape(1,-1)[0]
   trj = np.zeros((len(z),N+1))
   trj[:,0] = z.copy()
-  for j in range(0,N+1):
+  for j in range(0,N):
     trj[:,j+1] = naiveIntGPdH(trj[:,j].reshape(-1,1).copy(),h,GP)
   return trj[:, :-1], trj[:, 1:]
 
