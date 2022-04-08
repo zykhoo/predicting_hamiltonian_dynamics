@@ -236,11 +236,11 @@ def compute_metrics_NN(nn, h, diagdist, xshort, yshort, xlong, ylong, eval_len, 
         pass
       else: 
         starttime = time.time()
-        results_start = np.asarray(classicTrajectoryNN(i,h,nn,N=steps-1))
+        results_start = np.asarray(classicTrajectoryNN(i,h,nn,N=steps))
         time_within += time.time()-starttime
         MSE_within += MSE(long_groundtruth[count,1,:,:steps], results_start[1,:,:], diagdist)
         starttime = time.time()
-        results_start = np.asarray(naiveTrajectoryNN(i,h,nn,N=steps-1))
+        results_start = np.asarray(naiveTrajectoryNN(i,h,nn,N=steps))
         time_within_naive += time.time()-starttime
         MSE_within_naive += MSE(long_groundtruth[count,1,:,:steps], results_start[1,:,:], diagdist)
       count+=1 
