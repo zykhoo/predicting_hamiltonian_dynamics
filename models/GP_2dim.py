@@ -17,13 +17,10 @@ def naiveIntGP(z,h,gaussian_process,scaler):
 def naiveTrajectoryGP(z,h,gaussian_process,scaler,N=1):
 	## trajectory computed with classicInt
   z = z.reshape(1,-1)[0]
-  trj = np.zeros((len(z),N+2))
+  trj = np.zeros((len(z),N+1))
   trj[:,0] = z.copy()
-  if N == 1:
-    return z.reshape(-1,1), naiveIntGP(trj[:,0].reshape(-1,1),h,gaussian_process,scaler).reshape(-1,1)
-  else:
-    for j in range(0,N+1):
-      trj[:,j+1] = naiveIntGP(trj[:,j].reshape(-1,1).copy(),h,gaussian_process,scaler)
+  for j in range(0,N+1):
+    trj[:,j+1] = naiveIntGP(trj[:,j].reshape(-1,1).copy(),h,gaussian_process,scaler)
   return trj[:, :-1], trj[:, 1:]
 
 def classicIntGP(z,h,gaussian_process,scaler):
@@ -48,13 +45,10 @@ def classicIntGP(z,h,gaussian_process,scaler):
 def classicTrajectoryGP(z,h,gaussian_process,scaler,N=1):
 	## trajectory computed with classicInt
   z = z.reshape(1,-1)[0]
-  trj = np.zeros((len(z),N+2))
+  trj = np.zeros((len(z),N+1))
   trj[:,0] = z.copy()
-  if N == 1:
-    return z.reshape(-1,1), classicIntGP(trj[:,0].reshape(-1,1),h,gaussian_process,scaler).reshape(-1,1)
-  else:
-    for j in range(0,N+1):
-      trj[:,j+1] = classicIntGP(trj[:,j].reshape(-1,1).copy(),h,gaussian_process,scaler)
+  for j in range(0,N+1):
+    trj[:,j+1] = classicIntGP(trj[:,j].reshape(-1,1).copy(),h,gaussian_process,scaler)
   return trj[:, :-1], trj[:, 1:]
 
 def classicqbarpbar(z,h,gaussian_process,scaler):
