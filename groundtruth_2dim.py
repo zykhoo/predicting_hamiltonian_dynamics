@@ -22,22 +22,18 @@ def classicInt(z,f1,f2,h):
 		p = p + h*f2(np.block([q,p]))
 		return np.block([q,p])
 
-def classicTrajectory(z,f1,f2,h,N=10,n_h=800):
+def classicTrajectory(z,f1,f2,h,N=10,n_h=1):
 	## trajectory computed with classicInt
   h_gen = h/n_h
   z = z.reshape(1,-1)[0]
-  trj = np.zeros((len(z),N+2))
+  trj = np.zeros((len(z),N+1))
   trj[:,0] = z.copy()
 
-  if N == 1:
+  for i in range(0,N):
     for j in range(0,int(n_h+1)):
-      trj[:,0]=classicInt(trj[:,0],f1,f2,h_gen)
-    return z.reshape(-1,1), trj[:,0].reshape(-1,1)
-  else:
-    for i in range(0,N+1):
-      for j in range(0,int(n_h+1)):
-        trj[:,i+1] = classicInt(trj[:,i].copy(),f1,f2,h_gen)
-    return trj[:, :-1], trj[:, 1:]
+      trj[:,i+1] = classicInt(trj[:,i].copy(),f1,f2,h_gen)
+  return trj[:, :-1], trj[:, 1:]
+
 
 def CreateTrainingDataTrajClassicInt(traj_len,ini_con,spacedim,h,f1,f2,n_h = 800):
   space = Space(spacedim)
