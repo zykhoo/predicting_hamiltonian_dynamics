@@ -33,13 +33,10 @@ def classicIntGPdH(z,h,GP):
 def classicTrajectoryGPdH(z,h,GP,N=1):
 	## trajectory computed with classicInt
   z = z.reshape(1,-1)[0]
-  trj = np.zeros((len(z),N+2))
+  trj = np.zeros((len(z),N+1))
   trj[:,0] = z.copy()
-  if N == 1:
-    return z.reshape(-1,1), classicIntGPdH(trj[:,0].reshape(-1,1),h,GP).reshape(-1,1)
-  else:
-    for j in range(0,N+1):
-      trj[:,j+1] = classicIntGPdH(trj[:,j].reshape(-1,1).copy(),h,GP)
+  for j in range(0,N+1):
+    trj[:,j+1] = classicIntGPdH(trj[:,j].reshape(-1,1).copy(),h,GP)
   return trj[:, :-1], trj[:, 1:]
 
 def naiveIntGPdH(z,h,GP):
@@ -54,13 +51,10 @@ def naiveIntGPdH(z,h,GP):
 def naiveTrajectoryGPdH(z,h,GP,N=1):
 	## trajectory computed with classicInt
   z = z.reshape(1,-1)[0]
-  trj = np.zeros((len(z),N+2))
+  trj = np.zeros((len(z),N+1))
   trj[:,0] = z.copy()
-  if N == 1:
-    return z.reshape(-1,1), naiveIntGPdH(trj[:,0].reshape(-1,1),h,GP).reshape(-1,1)
-  else:
-    for j in range(0,N+1):
-      trj[:,j+1] = naiveIntGPdH(trj[:,j].reshape(-1,1).copy(),h,GP)
+  for j in range(0,N+1):
+    trj[:,j+1] = naiveIntGPdH(trj[:,j].reshape(-1,1).copy(),h,GP)
   return trj[:, :-1], trj[:, 1:]
 
 class BertalanGP():
