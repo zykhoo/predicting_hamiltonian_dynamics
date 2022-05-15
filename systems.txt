@@ -23,7 +23,7 @@ H = lambda z: 1/2*np.asarray(z[1])**2 + D*(1-np.exp(-alpha*z[0]))**2
 spacedim=[(-1., 4.), (-3.0,3.0)]
 x0, H0 = 0.,0.
 
-sys,dim = "NN","polynomial",2
+sys,dim = "polynomial",2
 f2 = lambda z: -(2. * z[0]**3 - 0.9 * z[0]**2 + 0.5 )
 f1 = lambda z: 2. * z[1]**3 - 0.9 * z[1]**2 + 0.5 
 H = lambda z: 0.5 * z[0]**4 - 0.3 * z[0]**3 + 0.5 * z[0] + 0.5* z[1]**4 - 0.3 * z[1]**3 + 0.5 * z[1]
