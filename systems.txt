@@ -1,0 +1,89 @@
+sys,dim = "oscillator",2
+H = lambda x: 1/2*x[1]**2+ 1/2*x[0]**2
+f1 = lambda x: x[1]
+f2 = lambda x: -x[0]
+spacedim = [(-1.,1.),(-1.,1.)]
+x0, H0 = 0.,0.
+
+sys,dim = "pendulum",2
+f1 = lambda x: x[1]
+f2 = lambda x: -np.sin(x[0])
+H = lambda x: 1/2*x[1]**2+(1-np.cos(x[0]))
+spacedim=[(-2*np.pi, 2*np.pi), (-1.2, 1.2)]
+x0, H0 = 0.,0.
+
+sys,dim = "morsepotential",2
+D=10
+alpha=0.5
+m=1.
+f2 = lambda z: -2*D*alpha*(np.exp(-alpha*z[0])-np.exp(-2*alpha*z[0]))
+f1 = lambda x: x[1]
+f = lambda z: -2*D*alpha*(np.exp(-alpha*z)-np.exp(-2*alpha*z))
+H = lambda z: 1/2*np.asarray(z[1])**2 + D*(1-np.exp(-alpha*z[0]))**2
+spacedim=[(-1., 4.), (-3.0,3.0)]
+x0, H0 = 0.,0.
+
+sys,dim = "NN","polynomial",2
+f2 = lambda z: -(2. * z[0]**3 - 0.9 * z[0]**2 + 0.5 )
+f1 = lambda z: 2. * z[1]**3 - 0.9 * z[1]**2 + 0.5 
+H = lambda z: 0.5 * z[0]**4 - 0.3 * z[0]**3 + 0.5 * z[0] + 0.5* z[1]**4 - 0.3 * z[1]**3 + 0.5 * z[1]
+spacedim=[(-1., 1.), (-1., 1.)]
+x0, H0 = 0.,0.
+
+sys,dim = "exponential",2
+f2 = lambda z: -np.exp(z[0]**2 - 0.5 * z[0]) * (2 * z[0] - 0.5 )
+f1 = lambda z: np.exp(z[1]**2 - 0.5 * z[1]) * (2 * z[1] - 0.5 )
+H = lambda z: np.exp(z[0]**2 - 0.5 * z[0]) + np.exp(z[1]**2 - 0.5 * z[1])
+spacedim=[(-1., 1.), (-1., 1.)]
+x0, H0 = 0.,2.
+
+sys,dim = "trigo",2
+f2 = lambda z: - 2 * np.cos(z[0]) * np.sin(z[0])
+f1 = lambda z: - 2 * np.cos(z[1]) * np.sin(z[1])
+H = lambda z: np.sin(z[0])**2 + np.cos(z[1])**2
+spacedim=[(-2., 2.), (-2., 2.)]
+x0, H0 = 0.,0.
+
+sys,dim = "arctan",2
+f2 = lambda z: - 2 * z[0] / (z[0]**4 +1)
+f1 = lambda z: 2 * z[1] / (z[1]**4 +1)
+H = lambda z: np.arctan(z[0]**2) + np.arctan(z[1]**2)
+spacedim=[(-2., 2.), (-2., 2.)]
+x0, H0 = 0.,0.
+
+sys,dim = "sqrt",2
+f2 = lambda z: -0.5/np.sqrt(z[0]**4 +z[0]**2+1) * (4*z[0]**3 +2*z[0])
+f1 = lambda z: 0.5/np.sqrt(z[1]**4 +z[1]**2+1) * (4*z[1]**3 +2*z[1])
+H = lambda z: np.sqrt(z[0]**4+z[0]**2+1)+np.sqrt(z[1]**4+z[1]**2+1)
+spacedim=[(-1., 1.), (-1., 1.)]
+x0, H0 = 0.,0.
+
+sys,dim = "ln",2
+f2 = lambda z: - 1 + 2 /z[0]
+f1 = lambda x:  1 - 2/x[1]
+H = lambda z: z[0] - np.log(z[0]**2) + z[1] - np.log(z[1]**2)
+spacedim=[(1., 3.), (1., 3.)]
+x0, H0 = 1.,2.
+
+sys,dim = "lotkavolterra",2
+a, b, g, d = 2/3, 4/3, 1., 1.
+f2 = lambda z: d * z[0] * z[1] - g * z[1]
+f1 = lambda x: a * x[0] - b * x[0] * x[1]
+H = lambda z: d * z[0] - g * np.log(z[0]) + b * z[1] - a * np.log(z[1])
+spacedim=[(0.1, 4.), (0.1, 4.)]
+x0, H0 = 1., d + b
+
+experiment,sys,dim = "NN","ln2",2
+f2 = lambda z: - 1 + 1 /z[0]
+f1 = lambda x:  1 - 1/x[1]
+H = lambda z: z[0] - np.log(z[0]) + z[1] - np.log(z[1])
+spacedim=[(0.1, 4.), (0.1, 4.)]
+x0, H0 = 1.,2.
+
+sys,dim = "exponential2",2
+f2 = lambda z: -np.exp(z[0]**2 - 2 * z[0]) * (2 * z[0] - 2 )
+f1 = lambda z: np.exp(z[1]**2 - 2 * z[1]) * (2 * z[1] - 2 )
+H = lambda z: np.exp(z[0]**2 - 2 * z[0]) + np.exp(z[1]**2 - 2 * z[1])
+spacedim=[(0., 2.), (0., 2.)]
+x0, H0 = 0.,0.
+
